@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: airbnb
+    schema: raw
+    tables:
+
+      - name: listings
+        identifier: raw_listings
+
+      - name: hosts
+        identifier: raw_hosts
+      
+      - name: reviews
+        identifier: raw_reviews
+        config:                                                     # this piece of code is used to check the freshness of the file
+          loaded_at_field: date                                     # column the needs to be checked for freshness
+          freshness:
+             warn_after: {count: 1, period: hour}                   # send a warning if we don't have any new records in the last hour
+             error_after: {count: 24, period: hour}                 # send a error if we don't have any data in the last 24 hours
